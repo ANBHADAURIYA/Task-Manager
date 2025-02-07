@@ -1,0 +1,79 @@
+<div class="overview-container">
+  <h1>Task Manager</h1>
+  <h2>Task Overview</h2>
+
+  <div class="task-container">
+    <div class="task-item">
+      <h3 class="task-status">To Do</h3>
+      <p class="task-count">{{ summary.todo }}</p>
+    </div>
+    <div class="task-item">
+      <h3 class="task-status">In Progress</h3>
+      <p class="task-count">{{ summary.inProgress }}</p>
+    </div>
+    <div class="task-item">
+      <h3 class="task-status">Done</h3>
+      <p class="task-count">{{ summary.done }}</p>
+    </div>
+  </div>
+
+  <h2 class="tasks-header">
+    Tasks
+    <button class="create-button" (click)="openModal()">+ Create</button>
+  </h2>
+
+  <div class="filter-container">
+    <input type="text" placeholder="Search tasks..." [(ngModel)]="searchTerm" (input)="filterTasks()" />
+    <select [(ngModel)]="selectedStatus" (change)="filterTasks()">
+      <option value="">All Statuses</option>
+      <option value="To Do">To Do</option>
+      <option value="In Progress">In Progress</option>
+      <option value="Done">Done</option>
+    </select>
+  </div>
+
+  <div class="tasks-container" style="flex-direction: column;;">
+    <div class="task-item" style="width: 96%;" *ngFor="let task of filteredTasks" (click)="onTaskClick(task.id)">
+      <h3>{{ task.name }}</h3>
+      <p>{{ task.description }}</p>
+      <p *ngIf="isAdmin">Assignee: {{ task.assignee }}</p>
+      <p *ngIf="isAdmin">Due Date: {{ task.dueDate }}</p>
+      <button *ngIf="isAdmin" class="delete-button" (click)="deleteTask(task.id); $event.stopPropagation()">🗑️</button>
+    </div>
+  </div>
+
+  <div class="modal" *ngIf="isModalOpen">
+    <div class="modal-content">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <h2>{{ taskForm.id ? 'Update' : 'Create' }} Task</h2>
+      <form (ngSubmit)="onSubmit()">
+        <input type="hidden" [(ngModel)]="taskForm.id" name="id" />
+        <div>
+          <label for="name">Name:</label>
+          <input type="text" id="name" [(ngModel)]="taskForm.name" name="name" required />
+        </div>
+        <div>
+          <label for="status">Status:</label>
+          <select id="status" [(ngModel)]="taskForm.status" name="status" required>
+            <option value="To Do">To Do</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Done">Done</option>
+          </select>
+        </div>
+        <div>
+          <label for="description">Description:</label>
+          <textarea id="description" [(ngModel)]="taskForm.description" name="description" required></textarea>
+        </div>
+        <div *ngIf="isAdmin">
+          <label for="assignee">Assignee:</label>
+          <input type="text" id="assignee" [(ngModel)]="taskForm.assignee" name="assignee" required />
+        </div>
+        <div *ngIf="isAdmin">
+          <label for="dueDate">Due Date:</label>
+          <input type="date" id="dueDate" [(ngModel)]="taskForm.dueDate" name="dueDate" required />
+        </div>
+        <button type="submit">{{ taskForm.id ? 'Update' : 'Create' }} Task</button>
+      </form>
+    </div>
+  </div>
+</div>
