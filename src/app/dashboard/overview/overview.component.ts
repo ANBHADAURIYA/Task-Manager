@@ -92,7 +92,6 @@ export class OverviewComponent implements OnInit {
 
   async onSubmit() {
     if (this.taskForm.id) {
-
       const taskIndex = this.tasks.findIndex(task => task.id === this.taskForm.id);
       if (taskIndex !== -1) {
         const oldStatus = this.tasks[taskIndex].status;
@@ -102,7 +101,6 @@ export class OverviewComponent implements OnInit {
         }
       }
     } else {
-
       const newTask = {
         ...this.taskForm,
         id: this.tasks.length ? Math.max(...this.tasks.map(task => task.id)) + 1 : 1,
@@ -151,5 +149,10 @@ export class OverviewComponent implements OnInit {
       assignee: '',
       dueDate: ''
     };
+  }
+
+  logout() {
+    localStorage.clear();
+    this.router.navigate(['/login']);
   }
 }

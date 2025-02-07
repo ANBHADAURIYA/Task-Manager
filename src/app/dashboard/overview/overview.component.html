@@ -1,5 +1,8 @@
 <div class="overview-container">
-  <h1>Task Manager</h1>
+  <div class="header-container">
+    <h1>Task Manager</h1>
+    <button class="logout-button" (click)="logout()">Logout</button>
+  </div>
   <h2>Task Overview</h2>
 
   <div class="task-container">
@@ -20,6 +23,7 @@
   <h2 class="tasks-header">
     Tasks
     <button class="create-button" (click)="openModal()">+ Create</button>
+    
   </h2>
 
   <div class="filter-container">
@@ -32,7 +36,7 @@
     </select>
   </div>
 
-  <div class="tasks-container" style="flex-direction: column;;">
+  <div class="tasks-container" style="flex-direction: column;">
     <div class="task-item" style="width: 96%;" *ngFor="let task of filteredTasks" (click)="onTaskClick(task.id)">
       <h3>{{ task.name }}</h3>
       <p>{{ task.description }}</p>
@@ -77,3 +81,4 @@
     </div>
   </div>
 </div>
+
